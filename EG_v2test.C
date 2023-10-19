@@ -24,7 +24,7 @@ void rootfuncgenerate(Int_t nEvents, Double_t v2); // ROOT method (a bit dangero
 
 
 //________________________________________________________________________
-void rootfuncgenerate(Int_t nEvents, Double_t v2) 
+void rootfuncgenerate(Int_t nEvents, Int_t nTracks, Double_t v2) 
 {
   cout << "Generating " << nEvents << " events" << endl << endl;
 
@@ -34,14 +34,28 @@ void rootfuncgenerate(Int_t nEvents, Double_t v2)
   // Define the function we want to generate
   TF1* v2Func = new TF1("v2Func", "1 + 2*[0]*cos(2*x)", 0, 2*(TMath::Pi()));
   v2Func->SetParameter(0, v2);
+
+  Double_t phi[nTracks]; // array to store phi angles
+
+  for (Int_t nt = 0; nt < nTracks; nt++) {
+
+    // Fill the array
+    phi[nt] = v2Func->GetRandom();
+  }
+
+  for(Int_t i = 0; i < nTracks; i++) {
+
+    hPhi->Fill(phi[i]);
+  }
+
   // make a loop for the number of events
   for(Int_t n = 0; n < nEvents; n++) {
     
     if((n+1)%1000==0)
       cout << "event " << n+1 << endl;
     
-    // fill our v2 dist histogram
-    hPhi->Fill(v2Func->GetRandom()); 
+  // fill our v2 dist histogram
+   hPhi->Fill(v2Func->GetRandom());
   }
   
   // Set ROOT drawing styles
