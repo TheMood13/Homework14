@@ -51,9 +51,13 @@ void rootfuncgenerate(Int_t nEvents, Int_t nTracks, Double_t v2)
   // make a loop for the number of events
   for(Int_t n = 0; n < nEvents; n++) {
     
-    if((n+1)%1000==0)
+    if((n+1)%1000==0){
       cout << "event " << n+1 << endl;
-    
+      cout << "nTracks" << nTracks << endl;
+      for (Int_t i = 0; i < nTracks; i++) {
+        cout << i << phi[i] << endl;
+      }
+    }
   // fill our v2 dist histogram
    hPhi->Fill(v2Func->GetRandom());
   }
